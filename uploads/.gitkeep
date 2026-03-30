@@ -1,0 +1,2 @@
+This directory stores uploaded attachment files.
+Files are saved with unique names: timestamp-randomNumber-originalFilename

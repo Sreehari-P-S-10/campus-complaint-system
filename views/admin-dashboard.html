@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard - Manage all campus complaints and maintenance requests">
+    <title>Admin Dashboard | Campus Complaint System</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-dark-custom">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand" href="/admin-dashboard">
+                    <span class="navbar-brand-icon">🏫</span>
+                    Campus Complaints
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin-dashboard">
+                                <i class="bi bi-speedometer2 me-1"></i>Admin Panel
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge-priority badge-high" style="font-size: 0.7rem;">ADMIN</span>
+                        <div class="user-info">
+                            <div class="user-avatar" id="userAvatar">A</div>
+                            <span id="userName">Admin</span>
+                        </div>
+                        <button class="btn-logout" id="logoutBtn">
+                            <i class="bi bi-box-arrow-right me-1"></i>Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <div class="container-fluid px-4">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">⚡ Admin Dashboard</h1>
+                <p class="page-subtitle">Manage all campus complaints and maintenance requests</p>
+            </div>
+
+            <!-- Statistics Cards - Row 1: Main Stats -->
+            <div class="row g-3 mb-3">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card total fade-in-up stagger-1">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-value" id="statTotal">0</div>
+                        <div class="stat-label">Total Complaints</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card open fade-in-up stagger-2">
+                        <div class="stat-icon">🔓</div>
+                        <div class="stat-value" id="statOpen">0</div>
+                        <div class="stat-label">Open</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card inprogress fade-in-up stagger-3">
+                        <div class="stat-icon">⚙️</div>
+                        <div class="stat-value" id="statProgress">0</div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="stat-card resolved fade-in-up stagger-4">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value" id="statResolved">0</div>
+                        <div class="stat-label">Resolved</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Cards - Row 2: Category Breakdown + High Priority -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-3 col-lg">
+                    <div class="stat-card high fade-in-up stagger-5">
+                        <div class="stat-icon">🔴</div>
+                        <div class="stat-value" id="statHighPriority">0</div>
+                        <div class="stat-label">High Priority</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg">
+                    <div class="stat-card hostel fade-in-up stagger-6">
+                        <div class="stat-icon">🏠</div>
+                        <div class="stat-value" id="statHostel">0</div>
+                        <div class="stat-label">Hostel</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg">
+                    <div class="stat-card wifi fade-in-up stagger-7">
+                        <div class="stat-icon">📶</div>
+                        <div class="stat-value" id="statWifi">0</div>
+                        <div class="stat-label">WiFi</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg">
+                    <div class="stat-card classroom fade-in-up stagger-8">
+                        <div class="stat-icon">🏫</div>
+                        <div class="stat-value" id="statClassroom">0</div>
+                        <div class="stat-label">Classroom</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 col-lg">
+                    <div class="stat-card mess fade-in-up stagger-8">
+                        <div class="stat-icon">🍽️</div>
+                        <div class="stat-value" id="statMess">0</div>
+                        <div class="stat-label">Mess</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Complaints Table -->
+            <div class="glass-card fade-in-up">
+                <div class="glass-card-header">
+                    <h2 class="glass-card-title">
+                        <i class="bi bi-list-check"></i> All Complaints
+                        <span class="badge-priority badge-medium ms-2" style="font-size: 0.7rem;" id="ticketCount">0</span>
+                    </h2>
+                </div>
+
+                <!-- Filters -->
+                <div class="filter-bar mb-3">
+                    <select class="form-select" id="filterStatus">
+                        <option value="">All Status</option>
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                    <select class="form-select" id="filterCategory">
+                        <option value="">All Categories</option>
+                        <option value="Hostel">Hostel</option>
+                        <option value="WiFi">WiFi</option>
+                        <option value="Classroom">Classroom</option>
+                        <option value="Mess">Mess</option>
+                    </select>
+                    <select class="form-select" id="filterPriority">
+                        <option value="">All Priorities</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                    <div class="search-input-wrapper">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search complaints...">
+                    </div>
+                    <button class="btn-outline-glass" id="clearFilters">
+                        <i class="bi bi-x-lg me-1"></i>Clear
+                    </button>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table-glass">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Filed By</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ticketsTableBody">
+                            <tr>
+                                <td colspan="8">
+                                    <div class="loading-overlay">
+                                        <div class="spinner-glow"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticket Detail Modal -->
+    <div class="modal fade" id="ticketDetailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Complaint Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="ticketDetailBody">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Ticket Modal -->
+    <div class="modal fade" id="updateTicketModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Complaint</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="updateTicketForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="updateTicketId">
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.25rem;" id="updateTicketTitle"></p>
+
+                        <div class="mb-3">
+                            <label for="updateStatus" class="form-label" style="color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;">
+                                Status
+                            </label>
+                            <select class="form-select" id="updateStatus">
+                                <option value="Open">Open</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Resolved">Resolved</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="updatePriority" class="form-label" style="color: var(--text-secondary); font-weight: 600; font-size: 0.9rem;">
+                                Priority
+                            </label>
+                            <select class="form-select" id="updatePriority">
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-outline-glass" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-gradient" style="width: auto; padding: 0.6rem 1.5rem;">
+                            <i class="bi bi-check-lg me-1"></i>Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Admin Dashboard JS -->
+    <script src="/js/admin.js"></script>
+</body>
+</html>
