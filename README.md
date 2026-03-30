@@ -294,6 +294,19 @@ Access the app at: **http://localhost**
 
 ---
 
+## 🗺️ Roadmap & Future Architecture (V2)
+
+This repository represents **Version 1.0 (Baseline Architecture)**. It was built as a robust, production-ready foundation using a traditional MVC stack (Node.js, Express, MySQL) focusing heavily on database normalization, security (JWT, RBAC, Helmet), and core functionality. 
+
+**Planned features for Version 2 (Currently in planning):**
+- ⚛️ **Frontend Migration:** Transition from vanilla HTML/jQuery to a modern **React / Next.js** application.
+- 📱 **Mobile First:** Implement progressive web app (PWA) features for better student accessibility on-the-go.
+- 🔔 **Real-time Notifications:** WebSockets or Push API for instant complaint status updates.
+- 📊 **Advanced Analytics:** Admin dashboard data visualization using tools like Chart.js.
+- ⚡ **Microservices:** Decoupling the file upload and notification systems from the core auth API.
+
+---
+
 ## 📝 License
 
 This project is built for educational purposes as part of a campus management initiative.
